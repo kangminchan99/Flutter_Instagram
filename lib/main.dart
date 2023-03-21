@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_insta/utils/add.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 void main() {
@@ -20,7 +19,7 @@ class MyApp extends StatelessWidget {
               backgroundColor: Colors.white,
               titleTextStyle: TextStyle(color: Colors.black))),
       // 바텀 네비게이션바를 관리하고 인덱시스 스택을 사용하여 페이지를 인덱스에 맞게끔 변환시켜준다.
-      home: const App(),
+      home: App(),
     );
   }
 }
