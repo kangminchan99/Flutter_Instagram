@@ -8,49 +8,68 @@ class App extends GetView<BottomNavController> {
 
   @override
   Widget build(BuildContext context) {
-    // onWillPop - 뒤로가기 버튼을 눌렀을 때 이벤트 호출
     return WillPopScope(
-      child: Scaffold(
-        appBar: AppBar(),
-        body: Container(),
-        bottomNavigationBar: BottomNavigationBar(
-            // 바텀 네비게이션바 타입을 고정
-            type: BottomNavigationBarType.fixed,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            // pageIndex에 접근
-            currentIndex: controller.pageIndex.value,
-            // 바텀 네비게이션 바 선 없애기
-            elevation: 0,
-            onTap: (value) {},
-            items: [
-              BottomNavigationBarItem(
-                  icon: ImageData(IconsPath.homeOff),
-                  activeIcon: ImageData(IconsPath.homeOn),
-                  label: 'home'),
-              BottomNavigationBarItem(
-                  icon: ImageData(IconsPath.searchOff),
-                  activeIcon: ImageData(IconsPath.searchOn),
-                  label: 'home'),
-              BottomNavigationBarItem(
-                  icon: ImageData(IconsPath.uploadIcon), label: 'home'),
-              BottomNavigationBarItem(
-                  icon: ImageData(IconsPath.activeOff),
-                  activeIcon: ImageData(IconsPath.activeOn),
-                  label: 'home'),
-              BottomNavigationBarItem(
-                  icon: Container(
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.grey),
-                    width: 30,
-                    height: 30,
-                  ),
-                  label: 'home'),
-            ]),
+      onWillPop: controller.popAction,
+      child: Obx(
+        () => Scaffold(
+          appBar: AppBar(),
+          // IndexedStack - 페이지를 다양하게 처리할 수 있는 위젯
+          body: IndexedStack(
+            index: controller.pageIndex.value,
+            children: [
+              Container(
+                child: Text('1'),
+              ),
+              Container(
+                child: Text('2'),
+              ),
+              Container(
+                child: Text('3'),
+              ),
+              Container(
+                child: Text('4'),
+              ),
+              Container(
+                child: Text('5'),
+              )
+            ],
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+              // 바텀 네비게이션바 타입을 고정
+              type: BottomNavigationBarType.fixed,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              // pageIndex에 접근
+              currentIndex: controller.pageIndex.value,
+              // 바텀 네비게이션 바 선 없애기
+              elevation: 0,
+              onTap: controller.chageBottomNav,
+              items: [
+                BottomNavigationBarItem(
+                    icon: ImageData(IconsPath.homeOff),
+                    activeIcon: ImageData(IconsPath.homeOn),
+                    label: 'home'),
+                BottomNavigationBarItem(
+                    icon: ImageData(IconsPath.searchOff),
+                    activeIcon: ImageData(IconsPath.searchOn),
+                    label: 'home'),
+                BottomNavigationBarItem(
+                    icon: ImageData(IconsPath.uploadIcon), label: 'home'),
+                BottomNavigationBarItem(
+                    icon: ImageData(IconsPath.activeOff),
+                    activeIcon: ImageData(IconsPath.activeOn),
+                    label: 'home'),
+                BottomNavigationBarItem(
+                    icon: Container(
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.grey),
+                      width: 30,
+                      height: 30,
+                    ),
+                    label: 'home'),
+              ]),
+        ),
       ),
-      onWillPop: () async {
-        return false;
-      },
     );
   }
 }
