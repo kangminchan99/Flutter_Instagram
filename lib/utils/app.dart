@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_insta/components/image_data.dart';
 import 'package:flutter_insta/controller/bottom_nav_controller.dart';
+import 'package:flutter_insta/pages/home.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
 class App extends GetView<BottomNavController> {
@@ -12,13 +13,12 @@ class App extends GetView<BottomNavController> {
       onWillPop: controller.popAction,
       child: Obx(
         () => Scaffold(
-          appBar: AppBar(),
           // IndexedStack - 페이지를 다양하게 처리할 수 있는 위젯
           body: IndexedStack(
             index: controller.pageIndex.value,
             children: [
               Container(
-                child: Text('1'),
+                child: const Home(),
               ),
               Container(
                 child: Text('2'),
