@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_insta/components/avatar.dart';
 import 'package:flutter_insta/components/image_data.dart';
+import 'package:flutter_insta/components/post_widget.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 
 class Home extends StatelessWidget {
@@ -40,7 +41,11 @@ class Home extends StatelessWidget {
 
   // 중앙 포스트 만들기
   Widget _postList() {
-    return 
+    return Column(
+      children:
+          // List.generate - 리스트 개수 지정 및 인덱스 지정
+          List.generate(50, (index) => PostWidget()).toList(),
+    );
   }
 
   // 아바타 영역 구현
