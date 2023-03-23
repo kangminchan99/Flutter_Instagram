@@ -31,18 +31,41 @@ class Search extends StatelessWidget {
     );
   }
 
+  // 로우로 구성된 3개의 컬럼으로 컨테이너에 이미지가 하나씩 들어간다. 비디오는 세로로 2칸을 차지 (가운데는 들어오지 않음)
   Widget _body() {
     return SingleChildScrollView(
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            children: [],
+          Expanded(
+            child: Column(
+              children: [
+                Container(
+                  height: 140,
+                  color: Colors.red,
+                ),
+              ],
+            ),
           ),
-          Column(
-            children: [],
+          Expanded(
+            child: Column(
+              children: [
+                Container(
+                  height: 140,
+                  color: Colors.black,
+                ),
+              ],
+            ),
           ),
-          Column(
-            children: [],
+          Expanded(
+            child: Column(
+              children: [
+                Container(
+                  height: 140,
+                  color: Colors.green,
+                ),
+              ],
+            ),
           )
         ],
       ),
