@@ -1,7 +1,39 @@
-import 'package:flutter/material.dart';
+import 'dart:math';
 
-class Search extends StatelessWidget {
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:quiver/iterables.dart';
+
+class Search extends StatefulWidget {
   const Search({super.key});
+
+  @override
+  State<Search> createState() => _SearchState();
+}
+
+class _SearchState extends State<Search> {
+  // 이중 어레이 사용
+  List<List<int>> groupBox = [[], [], []];
+  // groupIndex - 사이즈를 매칭되는 위치에 더해준다. (작은 사이즈에 먼저 넣어준다.)
+  List<int> groupIndex = [0, 0, 0];
+  @override
+  void initState() {
+    super.initState();
+    for (var i = 0; i < 101; i++) {
+      // 몇번째 인덱스가 가장 작은지 추출해서 그것에다 더해준다.
+      var gi = groupIndex.indexOf(min<int>(groupIndex)!);
+
+      var size = 1;
+      if (gi != 1) {
+        // 나머지가 0이면 1 아니면 2
+        size = Random().nextInt(100) % 2 == 0 ? 1 : 2;
+      }
+      groupBox[gi].add(size);
+      // 더해줌
+      groupIndex[gi] += size;
+    }
+  }
 
   Widget _appbar() {
     return Row(
@@ -35,40 +67,33 @@ class Search extends StatelessWidget {
   Widget _body() {
     return SingleChildScrollView(
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                Container(
-                  height: 140,
-                  color: Colors.red,
-                ),
-              ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+          // List.generate_groupBox.length 길이(3) 만큼 돈다.
+          children: List.generate(
+            groupBox.length,
+            (index) => Expanded(
+              child: Column(
+                // 요소마다 1이 나오므로 높이가 0.33인 정사각형이 쌓인다.
+                children: List.generate(
+                  groupBox[index].length,
+                  (idx) => Container(
+                    height: Get.width * 0.33 * groupBox[index][idx],
+                    // 경계면 표시
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white),
+                        // 색깔 랜덤지정
+                        color: Colors.primaries[
+                            Random().nextInt(Colors.primaries.length)]),
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          'https://thumbnews.nateimg.co.kr/view610///news.nateimg.co.kr/orgImg/hk/2019/08/02/03.20228245.1.jpg',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ).toList(),
+              ),
             ),
-          ),
-          Expanded(
-            child: Column(
-              children: [
-                Container(
-                  height: 140,
-                  color: Colors.black,
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Column(
-              children: [
-                Container(
-                  height: 140,
-                  color: Colors.green,
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
+          ).toList()),
     );
   }
 

@@ -38,6 +38,7 @@ dependencies:
   get: ^4.6.5
   cached_network_image: ^3.2.3
   expandable_text: ^2.3.0 # 텍스트 접고 펼치는 기능
+  quiver: ^3.2.1 # adds additional functionality.
 
 
 dev_dependencies:
