@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../components/message_popup.dart';
-import '../pages/upload_page.dart';
+import '../pages/upload.dart';
 
 // 가독성이 좋게 구현
 enum PageName { Home, SEARCH, UPLOAD, ACTICITY, MYPAGE }
@@ -31,7 +31,7 @@ class BottomNavController extends GetxController {
         _changePage(value, hasGesture: hasGesture);
         break;
       case PageName.UPLOAD:
-        Get.to(() => const UploadPage());
+        Get.to(() => const Upload());
         break;
     }
   }

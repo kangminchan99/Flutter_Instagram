@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_insta/components/image_data.dart';
 import 'package:flutter_insta/controller/bottom_nav_controller.dart';
 import 'package:flutter_insta/pages/home.dart';
+import 'package:flutter_insta/pages/upload.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
 import '../pages/search/search.dart';
@@ -28,9 +29,7 @@ class App extends GetView<BottomNavController> {
                       builder: (context) => const Search());
                 },
               ),
-              Container(
-                child: Text('3'),
-              ),
+              const Upload(),
               Container(
                 child: Text('4'),
               ),
