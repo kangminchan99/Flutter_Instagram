@@ -53,6 +53,19 @@ class _SearchFocusState extends State<SearchFocus>
     );
   }
 
+  Widget _body() {
+    return TabBarView(
+      controller: tabController,
+      children: const [
+        Center(child: Text('인기 페이지')),
+        Center(child: Text('계정 페이지')),
+        Center(child: Text('오디오 페이지')),
+        Center(child: Text('태그 페이지')),
+        Center(child: Text('장소 페이지')),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,10 +96,7 @@ class _SearchFocusState extends State<SearchFocus>
         ),
         bottom: tabMenu(),
       ),
-      body: SafeArea(
-          child: Column(
-        children: [],
-      )),
+      body: _body(),
     );
   }
 }

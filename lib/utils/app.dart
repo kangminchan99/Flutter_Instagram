@@ -20,7 +20,14 @@ class App extends GetView<BottomNavController> {
             index: controller.pageIndex.value,
             children: [
               const Home(),
-              const Search(),
+              // 중첩 라우터 설정법
+              Navigator(
+                key: controller.searchPageNavKey,
+                onGenerateRoute: (routeSetting) {
+                  return MaterialPageRoute(
+                      builder: (context) => const Search());
+                },
+              ),
               Container(
                 child: Text('3'),
               ),

@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-
 import '../components/message_popup.dart';
 import '../pages/upload_page.dart';
 
@@ -13,6 +11,8 @@ enum PageName { Home, SEARCH, UPLOAD, ACTICITY, MYPAGE }
 // 바텀 네비게이션 바 상태관리
 class BottomNavController extends GetxController {
   RxInt pageIndex = 0.obs;
+  // 중첩 라우터를 위한 글로벌키 설정
+  GlobalKey<NavigatorState> searchPageNavKey = GlobalKey<NavigatorState>();
 
   // 페이지 이동 후 ex) home >> upload >> mypage로 사용자가 페이지 이동 시,
   // 뒤로가기 버튼을 눌렀을 경우 차례대로 뒤로가기
