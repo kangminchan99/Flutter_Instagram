@@ -10,6 +10,9 @@ enum PageName { Home, SEARCH, UPLOAD, ACTICITY, MYPAGE }
 
 // 바텀 네비게이션 바 상태관리
 class BottomNavController extends GetxController {
+  // BottomNavController를 Get방식으로 찾겠다.
+  static BottomNavController get to => Get.find();
+
   RxInt pageIndex = 0.obs;
   // 중첩 라우터를 위한 글로벌키 설정
   GlobalKey<NavigatorState> searchPageNavKey = GlobalKey<NavigatorState>();
@@ -62,6 +65,15 @@ class BottomNavController extends GetxController {
               ));
       return true;
     } else {
+      // 현재 페이지를 추출한 다음 서치페이지일 경우 searchPageNavKey.currentState를 추출한 다음
+      // maybePop() - 팝할게 있는지 없는지 체크해준다. pop할게 있는 경우 true, 없을경우 false,
+      var page = PageName.values[bottomHistory.last];
+      if (page == PageName.SEARCH) {
+        //
+        var value = await searchPageNavKey.currentState!.maybePop();
+        // return false - popAction에서 아무것도 안하고 아래로 내려간다.
+        if (value) return false;
+      }
       // bottomHistory의 마지막 인덱스를 지워 뒤로갈 페이지 인덱스를 바텀 네비게이션으로 전달
       bottomHistory.removeLast();
       var index = bottomHistory.last;

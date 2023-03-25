@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_insta/components/image_data.dart';
+import 'package:flutter_insta/controller/bottom_nav_controller.dart';
 import 'package:get/get.dart';
 
 class SearchFocus extends StatefulWidget {
@@ -72,7 +73,8 @@ class _SearchFocusState extends State<SearchFocus>
       appBar: AppBar(
         elevation: 0,
         leading: GestureDetector(
-            onTap: Get.back,
+            // 중첩라우터를 사용하기위해 사용
+            onTap: BottomNavController.to.popAction,
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: ImageData(IconsPath.backBtnIcon),
