@@ -1,14 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_insta/components/image_data.dart';
-import 'package:get/get.dart';
+import 'package:photo_manager/photo_manager.dart';
 
-class Upload extends StatelessWidget {
+class Upload extends StatefulWidget {
   const Upload({super.key});
 
+  @override
+  State<Upload> createState() => _UploadState();
+}
+
+class _UploadState extends State<Upload> {
+  var albums = <AssetPathEntity>[];
+  var imageList = <AssetEntity>[];
+  var headerTitle = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPhotos();
+  }
+
+  void _loadPhotos() async {
+    // 허가 요청
+    var result = await PhotoManager.requestPermissionExtend();
+    if (result.isAuth) {
+      albums = await PhotoManager.getAssetPathList(
+        type: RequestType.image,
+        filterOption: FilterOptionGroup(
+          imageOption: const FilterOption(
+              sizeConstraint: SizeConstraint(
+            minHeight: 100,
+            minWidth: 100,
+          )),
+          orders: [
+            const OrderOption(type: OrderOptionType.createDate, asc: false)
+          ],
+        ),
+      );
+      _loadData();
+    } else {
+      // message 권한 요청
+    }
+  }
+
+  void _loadData() async {
+    headerTitle = albums.first.name;
+    await _pagingPhotos();
+    update();
+  }
+
+  Future<void> _pagingPhotos() async {
+    var photos = await albums.first.getAssetListPaged(page: 0, size: 30);
+    imageList.addAll(photos);
+  }
+
+  void update() => setState(() {});
+
   Widget _imagePreview() {
+    var size = MediaQuery.of(context).size.width;
     return Container(
-      width: Get.width,
-      height: Get.width,
+      width: size,
+      height: size,
       color: Colors.grey,
     );
   }
@@ -22,15 +74,15 @@ class Upload extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5),
             child: Row(
-              children: const [
+              children: [
                 Text(
-                  '갤러리',
-                  style: TextStyle(
+                  headerTitle,
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 18,
                   ),
                 ),
-                Icon(Icons.arrow_drop_down)
+                const Icon(Icons.arrow_drop_down)
               ],
             ),
           ),
@@ -81,7 +133,7 @@ class Upload extends StatelessWidget {
           mainAxisSpacing: 1,
           crossAxisSpacing: 1,
           childAspectRatio: 1),
-      itemCount: 100,
+      itemCount: imageList.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
           color: Colors.red,
