@@ -25,6 +25,7 @@ class _UploadState extends State<Upload> {
     var result = await PhotoManager.requestPermissionExtend();
     if (result.isAuth) {
       albums = await PhotoManager.getAssetPathList(
+        onlyAll: true,
         type: RequestType.image,
         filterOption: FilterOptionGroup(
           imageOption: const FilterOption(
