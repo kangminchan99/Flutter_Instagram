@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_insta/components/image_data.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -13,6 +15,7 @@ class _UploadState extends State<Upload> {
   var albums = <AssetPathEntity>[];
   var imageList = <AssetEntity>[];
   var headerTitle = '';
+  AssetEntity? selectedImage;
 
   @override
   void initState() {
@@ -38,6 +41,20 @@ class _UploadState extends State<Upload> {
           ],
         ),
       );
+      // albums.addAll([
+      //   AssetPathEntity(id: '', name: '1'),
+      //   AssetPathEntity(id: '', name: '1'),
+      //   AssetPathEntity(id: '', name: '1'),
+      //   AssetPathEntity(id: '', name: '1'),
+      //   AssetPathEntity(id: '', name: '1'),
+      //   AssetPathEntity(id: '', name: '1'),
+      //   AssetPathEntity(id: '', name: '1'),
+      //   AssetPathEntity(id: '', name: '1'),
+      //   AssetPathEntity(id: '', name: '1'),
+      //   AssetPathEntity(id: '', name: '1'),
+      //   AssetPathEntity(id: '', name: '1'),
+      //   AssetPathEntity(id: '', name: '1'),
+      // ]);
       _loadData();
     } else {
       // message 권한 요청
@@ -53,17 +70,26 @@ class _UploadState extends State<Upload> {
   Future<void> _pagingPhotos() async {
     var photos = await albums.first.getAssetListPaged(page: 0, size: 30);
     imageList.addAll(photos);
+    selectedImage = imageList.first;
   }
 
+  // setState를 update 함수로 사용
   void update() => setState(() {});
 
   Widget _imagePreview() {
     var size = MediaQuery.of(context).size.width;
     return Container(
-      width: size,
-      height: size,
-      color: Colors.grey,
-    );
+        width: size,
+        height: size,
+        color: Colors.grey,
+        child: selectedImage == null
+            ? Container()
+            : _photoWidget(selectedImage!, size.toInt(), builder: (data) {
+                return Image.memory(
+                  data,
+                  fit: BoxFit.cover,
+                );
+              }));
   }
 
   Widget _header() {
@@ -72,19 +98,77 @@ class _UploadState extends State<Upload> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: Row(
-              children: [
-                Text(
-                  headerTitle,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
+          GestureDetector(
+            onTap: () {
+              // 바텀 시트 띄우기
+              showModalBottomSheet(
+                  context: context,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20)),
                   ),
-                ),
-                const Icon(Icons.arrow_drop_down)
-              ],
+                  // 바텀 시트 크기 늘리기
+                  isScrollControlled: albums.length > 10 ? true : false,
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height -
+                        MediaQuery.of(context).padding.top,
+                  ),
+
+                  //
+                  builder: (_) => Container(
+                        height: albums.length > 10
+                            ? Size.infinite.height
+                            : albums.length * 60,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Center(
+                                child: Container(
+                                  margin: const EdgeInsets.only(top: 7),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.black54),
+                                  width: 40,
+                                  height: 4,
+                                ),
+                              ),
+                              Expanded(
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      // ... - 열거하기 위해 사용.
+                                      ...List.generate(
+                                        albums.length,
+                                        (index) => Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 15, horizontal: 20),
+                                          child: Text(albums[index].name),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ]),
+                      ));
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: Row(
+                children: [
+                  Text(
+                    headerTitle,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const Icon(Icons.arrow_drop_down)
+                ],
+              ),
             ),
           ),
           Row(
@@ -136,11 +220,37 @@ class _UploadState extends State<Upload> {
           childAspectRatio: 1),
       itemCount: imageList.length,
       itemBuilder: (BuildContext context, int index) {
-        return Container(
-          color: Colors.red,
-        );
+        return _photoWidget(imageList[index], 200, builder: (data) {
+          return GestureDetector(
+            onTap: () {
+              selectedImage = imageList[index];
+              update();
+            },
+            child: Opacity(
+              opacity: imageList[index] == selectedImage ? 0.3 : 1,
+              child: Image.memory(
+                data,
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        });
       },
     );
+  }
+
+  // 아래에 이미지를 넣는 부분.
+  Widget _photoWidget(AssetEntity asset, int thumsize,
+      {required Widget Function(Uint8List) builder}) {
+    return FutureBuilder(
+        future: asset.thumbnailDataWithSize(ThumbnailSize(thumsize, thumsize)),
+        builder: (_, AsyncSnapshot<Uint8List?> snapshot) {
+          if (snapshot.hasData) {
+            return builder(snapshot.data!);
+          } else {
+            return Container();
+          }
+        });
   }
 
   @override
