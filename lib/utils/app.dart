@@ -5,6 +5,7 @@ import 'package:flutter_insta/pages/home.dart';
 import 'package:flutter_insta/pages/upload.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
+import '../pages/active_history.dart';
 import '../pages/search/search.dart';
 
 class App extends GetView<BottomNavController> {
@@ -29,10 +30,8 @@ class App extends GetView<BottomNavController> {
                       builder: (context) => const Search());
                 },
               ),
-              const Upload(),
-              Container(
-                child: Text('4'),
-              ),
+              Container(),
+              const ActiveHistory(),
               Container(
                 child: Text('5'),
               )
