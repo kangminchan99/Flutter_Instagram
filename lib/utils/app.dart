@@ -6,6 +6,7 @@ import 'package:flutter_insta/pages/upload.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
 import '../pages/active_history.dart';
+import '../pages/mypage.dart';
 import '../pages/search/search.dart';
 
 class App extends GetView<BottomNavController> {
@@ -32,9 +33,7 @@ class App extends GetView<BottomNavController> {
               ),
               Container(),
               const ActiveHistory(),
-              Container(
-                child: Text('5'),
-              )
+              const MyPage(),
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(
