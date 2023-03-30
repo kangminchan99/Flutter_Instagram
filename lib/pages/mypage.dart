@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_insta/components/avatar.dart';
+import 'package:flutter_insta/components/discover_user.dart';
 import 'package:flutter_insta/components/image_data.dart';
 
 class MyPage extends StatelessWidget {
@@ -101,6 +102,45 @@ class MyPage extends StatelessWidget {
     );
   }
 
+  Widget _discoverPeople() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Text(
+                'Discover People',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                'See All',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.blue,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SingleChildScrollView(
+          // 옆으로 스크롤 기능
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Row(
+              children:
+                  List.generate(10, (index) => const DiscoverUser()).toList()),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,6 +180,7 @@ class MyPage extends StatelessWidget {
           children: [
             _information(),
             _menu(),
+            _discoverPeople(),
           ],
         ),
       ),
