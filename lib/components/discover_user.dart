@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_insta/components/avatar.dart';
 
 class DiscoverUser extends StatelessWidget {
-  const DiscoverUser({super.key});
+  final String userID;
+  final String description;
+  const DiscoverUser(
+      {required this.userID, required this.description, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,16 +35,16 @@ class DiscoverUser extends StatelessWidget {
                   size: 80,
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  'ITZY_Yeji',
-                  style: TextStyle(
+                Text(
+                  userID,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 13,
                   ),
                 ),
-                const Text(
-                  'Yeji님이 팔로우합니다.',
-                  style: TextStyle(
+                Text(
+                  description,
+                  style: const TextStyle(
                     fontSize: 13,
                   ),
                   // 텍스트 정렬

@@ -2,9 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_insta/components/avatar.dart';
 import 'package:flutter_insta/components/discover_user.dart';
 import 'package:flutter_insta/components/image_data.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 
-class MyPage extends StatelessWidget {
+class MyPage extends StatefulWidget {
   const MyPage({super.key});
+
+  @override
+  State<MyPage> createState() => _MyPageState();
+}
+
+// TickerProviderStateMixin을 사용하면 vsync: this 처리가능
+class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 2, vsync: this);
+  }
 
   Widget _staticsOne(String title, int value) {
     return Column(
@@ -134,11 +149,50 @@ class MyPage extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Row(
-              children:
-                  List.generate(10, (index) => const DiscoverUser()).toList()),
+              children: List.generate(
+            10,
+            (index) => DiscoverUser(
+                userID: 'ITZY_Yeji$index', description: 'Yeji$index님이 팔로우합니다.'),
+          ).toList()),
         ),
       ],
     );
+  }
+
+  Widget _tabMenu() {
+    return TabBar(
+      controller: tabController,
+      indicatorColor: Colors.black,
+      indicatorWeight: 1,
+      tabs: [
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: ImageData(IconsPath.gridViewOn),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: ImageData(IconsPath.myTagImageOff),
+        ),
+      ],
+    );
+  }
+
+  Widget _tabView() {
+    return GridView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: 100,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          childAspectRatio: 1,
+          mainAxisSpacing: 1,
+          crossAxisSpacing: 1,
+        ),
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            color: Colors.grey,
+          );
+        });
   }
 
   @override
@@ -181,6 +235,9 @@ class MyPage extends StatelessWidget {
             _information(),
             _menu(),
             _discoverPeople(),
+            const SizedBox(height: 20),
+            _tabMenu(),
+            _tabView(),
           ],
         ),
       ),
