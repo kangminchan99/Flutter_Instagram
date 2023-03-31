@@ -40,6 +40,9 @@ dependencies:
   expandable_text: ^2.3.0 # 텍스트 접고 펼치는 기능
   quiver: ^3.2.1 # adds additional functionality.
   photo_manager: ^2.6.0
+  firebase_core: ^2.9.0
+  firebase_auth: ^4.4.0
+  google_sign_in: ^6.0.2
 
 
 dev_dependencies:
