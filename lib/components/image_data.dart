@@ -68,4 +68,6 @@ class IconsPath {
       'images/mypage_bottom_sheet_setting_06.jpg';
   static String get mypageBottomSheetSetting07 =>
       'images/mypage_bottom_sheet_setting_07.jpg';
+  static String get glogo => 'images/glogo.png';
+  static String get flogo => 'images/flogo.png';
 }
