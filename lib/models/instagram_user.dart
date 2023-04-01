@@ -20,4 +20,13 @@ class InstaUser {
       thumbnail: json['thumnail'] == null ? '' : json['thumnail'] as String,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': uid,
+      'nickname': nickname,
+      'thumnail': thumbnail,
+      'description': description,
+    };
+  }
 }

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_insta/models/instagram_user.dart';
 
@@ -14,6 +16,15 @@ class UserRepository {
       return null;
     } else {
       return InstaUser.fromJson(data.docs.first.data());
+    }
+  }
+
+  static Future<bool> sign(InstaUser user) async {
+    try {
+      await FirebaseFirestore.instance.collection('users').add(user.toMap());
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }
