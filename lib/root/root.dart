@@ -19,9 +19,10 @@ class Root extends GetView<AuthController> {
           if (user.hasData) {
             // _, snapshot - buildcontext, snapshot
             return FutureBuilder<InstaUser?>(
-                future:
-                    // 내부 파이어베이스 유저 정보 조회 with user.data.uid
-                    controller.loginUser(user.data!.uid),
+                // future:
+                //     // 내부 파이어베이스 유저 정보 조회 with user.data.uid
+                //     controller.loginUser(user.data!.uid),
+                future: controller.loginUser(user.data!.uid),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return const App();
