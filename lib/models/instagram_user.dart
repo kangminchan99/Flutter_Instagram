@@ -29,4 +29,19 @@ class InstaUser {
       'description': description,
     };
   }
+
+  InstaUser copyWith({
+    String? uid,
+    String? nickname,
+    String? thumbnail,
+    String? description,
+  }) {
+    return InstaUser(
+      // 넘어온 데이터가 널값인 경우 기존의 데이터를 사용
+      uid: uid ?? this.uid,
+      nickname: nickname ?? this.nickname,
+      thumbnail: thumbnail ?? this.thumbnail,
+      description: description ?? this.description,
+    );
+  }
 }

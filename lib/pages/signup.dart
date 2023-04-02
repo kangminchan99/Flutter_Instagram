@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_insta/controller/auth_controller.dart';
 import 'package:flutter_insta/models/instagram_user.dart';
+import 'package:image_picker/image_picker.dart';
 
 class SignUp extends StatefulWidget {
   final String uid;
@@ -13,6 +16,10 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   TextEditingController nicknameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
+  XFile? thumbnailXFile;
+
+  void update() => setState(() {});
 
   Widget _avatar() {
     return Column(
@@ -22,15 +29,25 @@ class _SignUpState extends State<SignUp> {
           child: SizedBox(
             width: 100,
             height: 100,
-            child: Image.asset(
-              'images/default_image.png',
-              fit: BoxFit.cover,
-            ),
+            child: thumbnailXFile != null
+                ? Image.file(
+                    File(thumbnailXFile!.path),
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    'images/default_image.png',
+                    fit: BoxFit.cover,
+                  ),
           ),
         ),
         const SizedBox(height: 15),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () async {
+            // pickImage가 Future로 감싸져있기 때문에 await키워드를 사용한다.
+            thumbnailXFile =
+                await _picker.pickImage(source: ImageSource.gallery);
+            update();
+          },
           child: const Text('이미지 변경'),
         )
       ],
@@ -105,7 +122,7 @@ class _SignUpState extends State<SignUp> {
               nickname: nicknameController.text,
               description: descriptionController.text,
             );
-            AuthController.to.sign(signupUser);
+            AuthController.to.sign(signupUser, thumbnailXFile);
           },
           child: const Text('회원가입'),
         ),
