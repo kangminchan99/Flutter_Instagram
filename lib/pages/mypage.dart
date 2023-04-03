@@ -2,24 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_insta/components/avatar.dart';
 import 'package:flutter_insta/components/discover_user.dart';
 import 'package:flutter_insta/components/image_data.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:flutter_insta/controller/mypage_controller.dart';
+import 'package:get/get.dart';
 
-class MyPage extends StatefulWidget {
+class MyPage extends GetView<MyPageController> {
   const MyPage({super.key});
-
-  @override
-  State<MyPage> createState() => _MyPageState();
-}
-
-// TickerProviderStateMixin을 사용하면 vsync: this 처리가능
-class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
-  late TabController tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    tabController = TabController(length: 2, vsync: this);
-  }
 
   Widget _staticsOne(String title, int value) {
     return Column(
@@ -161,7 +148,7 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
 
   Widget _tabMenu() {
     return TabBar(
-      controller: tabController,
+      controller: controller.tabController,
       indicatorColor: Colors.black,
       indicatorWeight: 1,
       tabs: [

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_insta/binding/init_binding.dart';
 import 'package:flutter_insta/models/instagram_user.dart';
 import 'package:flutter_insta/repository/user_repository.dart';
 import 'package:get/get.dart';
@@ -13,8 +14,13 @@ class AuthController extends GetxController {
   Rx<InstaUser> user = InstaUser().obs;
 
   Future<InstaUser?> loginUser(String uid) async {
-    // DB조회
-    var userData = UserRepository.loginUserByUid(uid);
+    // 유저 데이를 조회를 하고
+    var userData = await UserRepository.loginUserByUid(uid);
+    // 유저 데이터가 널값이 아닌 경우 user에 (userData)를 넣어준다
+    if (userData != null) {
+      InitBinding.additionalBinding();
+      user(userData);
+    }
     return userData;
   }
 
@@ -51,7 +57,7 @@ class AuthController extends GetxController {
   void _submitSignup(InstaUser signupUser) async {
     var result = await UserRepository.sign(signupUser);
     if (result) {
-      user(signupUser);
+      loginUser(signupUser.uid!);
     }
   }
 }
