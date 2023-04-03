@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_insta/components/avatar.dart';
 import 'package:flutter_insta/components/discover_user.dart';
 import 'package:flutter_insta/components/image_data.dart';
+import 'package:flutter_insta/controller/auth_controller.dart';
 import 'package:flutter_insta/controller/mypage_controller.dart';
 import 'package:get/get.dart';
 
@@ -27,37 +28,38 @@ class MyPage extends GetView<MyPageController> {
   Widget _information() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Avatar(
-                thumbPath:
-                    'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Hwang_Ye-ji_%28%ED%99%A9%EC%98%88%EC%A7%80%29_220729.jpg/1200px-Hwang_Ye-ji_%28%ED%99%A9%EC%98%88%EC%A7%80%29_220729.jpg',
-                size: 80,
-                type: AvatarType.TYPE3,
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(child: _staticsOne('Posts', 15)),
-                    Expanded(child: _staticsOne('Followers', 11)),
-                    Expanded(child: _staticsOne('Following', 3)),
-                  ],
+      child: Obx(
+        () => Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Avatar(
+                  thumbPath: controller.targetUser.value.thumbnail!,
+                  size: 80,
+                  type: AvatarType.TYPE3,
                 ),
-              )
-            ],
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            '안녕하세요 황예지입니다.',
-            style: TextStyle(fontSize: 13, color: Colors.black),
-          )
-        ],
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(child: _staticsOne('Posts', 15)),
+                      Expanded(child: _staticsOne('Followers', 11)),
+                      Expanded(child: _staticsOne('Following', 3)),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 10),
+            Text(
+              controller.targetUser.value.description!,
+              style: TextStyle(fontSize: 13, color: Colors.black),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -188,12 +190,15 @@ class MyPage extends GetView<MyPageController> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        title: const Text(
-          '황예지',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-            fontSize: 20,
+        title: Obx(
+          () => Text(
+            // AuthController에서 닉네임 가져오기
+            controller.targetUser.value.nickname!,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+              fontSize: 20,
+            ),
           ),
         ),
         actions: [

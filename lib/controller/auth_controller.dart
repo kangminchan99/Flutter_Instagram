@@ -18,8 +18,9 @@ class AuthController extends GetxController {
     var userData = await UserRepository.loginUserByUid(uid);
     // 유저 데이터가 널값이 아닌 경우 user에 (userData)를 넣어준다
     if (userData != null) {
-      InitBinding.additionalBinding();
+      // InitBinding을 user(userData)보다 먼저 사용하면 데이터가 널값이 들어간다.
       user(userData);
+      InitBinding.additionalBinding();
     }
     return userData;
   }
