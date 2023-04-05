@@ -15,7 +15,7 @@ class PostWidget extends StatelessWidget {
         children: [
           Avatar(
               thumbPath:
-                  'https://thumbnews.nateimg.co.kr/view610///news.nateimg.co.kr/orgImg/hk/2019/08/02/03.20228245.1.jpg',
+                  'https://img.hankyung.com/photo/202112/BF.28304936.1.jpg',
               nickname: '황예지',
               size: 40,
               type: AvatarType.TYPE3),

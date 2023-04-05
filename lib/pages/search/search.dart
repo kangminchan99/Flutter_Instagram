@@ -95,7 +95,7 @@ class _SearchState extends State<Search> {
                             Random().nextInt(Colors.primaries.length)]),
                     child: CachedNetworkImage(
                       imageUrl:
-                          'https://thumbnews.nateimg.co.kr/view610///news.nateimg.co.kr/orgImg/hk/2019/08/02/03.20228245.1.jpg',
+                          'https://img.hankyung.com/photo/202112/BF.28304936.1.jpg',
                       fit: BoxFit.cover,
                     ),
                   ),

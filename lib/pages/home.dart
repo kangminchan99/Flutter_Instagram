@@ -13,7 +13,7 @@ class Home extends StatelessWidget {
       children: [
         Avatar(
             thumbPath:
-                'https://thumbnews.nateimg.co.kr/view610///news.nateimg.co.kr/orgImg/hk/2019/08/02/03.20228245.1.jpg',
+                'https://img.hankyung.com/photo/202112/BF.28304936.1.jpg',
             size: 70,
             type: AvatarType.TYPE2),
         // 내 프로필 아래에 플러스 추가하기

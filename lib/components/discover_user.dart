@@ -30,7 +30,7 @@ class DiscoverUser extends StatelessWidget {
                 const SizedBox(height: 10),
                 Avatar(
                   thumbPath:
-                      'https://thumbnews.nateimg.co.kr/view610///news.nateimg.co.kr/orgImg/hk/2019/08/02/03.20228245.1.jpg',
+                      'https://img.hankyung.com/photo/202112/BF.28304936.1.jpg',
                   type: AvatarType.TYPE2,
                   size: 80,
                 ),
