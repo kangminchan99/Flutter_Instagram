@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_insta/controller/upload_controller.dart';
 import 'package:get/get.dart';
 import '../components/message_popup.dart';
 import '../pages/upload.dart';
@@ -31,7 +32,9 @@ class BottomNavController extends GetxController {
         _changePage(value, hasGesture: hasGesture);
         break;
       case PageName.UPLOAD:
-        Get.to(() => const Upload());
+        Get.to(() => Upload(), binding: BindingsBuilder(() {
+          Get.put(UploadController(), permanent: true);
+        }));
         break;
     }
   }
