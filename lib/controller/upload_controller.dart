@@ -25,7 +25,7 @@ class UploadController extends GetxController {
     height: 0,
   ).obs;
 
-  File filteredImage;
+  File? filteredImage;
 
   @override
   void onInit() {
