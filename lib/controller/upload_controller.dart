@@ -1,5 +1,16 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:photo_manager/photo_manager.dart';
+// ignore: depend_on_referenced_packages
+import 'package:path/path.dart';
+// ignore: depend_on_referenced_packages, library_prefixes
+import 'package:image/image.dart' as imageLib;
+import 'package:photofilters/filters/preset_filters.dart';
+import 'package:photofilters/widgets/photo_filter.dart';
+
+import '../pages/upload/upload_des.dart';
 
 class UploadController extends GetxController {
   // showModalBottomSheet애서 빌더를 돌려주므로 albums는 굳이 상태관리를 해줄 필요가 없다.
@@ -13,6 +24,9 @@ class UploadController extends GetxController {
     width: 0,
     height: 0,
   ).obs;
+
+  File filteredImage;
+
   @override
   void onInit() {
     super.onInit();
@@ -68,6 +82,29 @@ class UploadController extends GetxController {
   void changeAlbum(AssetPathEntity album) async {
     headerTitle(album.name);
     await _pagingPhotos(album);
-    Get.back();
+  }
+
+  void gotoImageFilter() async {
+    var file = await selectedImage.value.file;
+    var fileName = basename(file!.path);
+    var image = imageLib.decodeImage(file.readAsBytesSync());
+    image = imageLib.copyResize(image!, width: 1000);
+    var imagefile = await Navigator.push(
+      Get.context!,
+      MaterialPageRoute(
+        builder: (context) => PhotoFilterSelector(
+          title: const Text("Photo Filter Example"),
+          image: image!,
+          filters: presetFiltersList,
+          filename: fileName,
+          loader: const Center(child: CircularProgressIndicator()),
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+    if (imagefile != null && imagefile.containsKey('image_filtered')) {
+      filteredImage = imagefile['image_filtered'];
+      Get.to(() => const UploadDescription());
+    }
   }
 }

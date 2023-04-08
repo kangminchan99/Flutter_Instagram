@@ -93,6 +93,7 @@ class Upload extends GetView<UploadController> {
                                   onTap: () {
                                     controller
                                         .changeAlbum(controller.albums[index]);
+                                    Get.back();
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
@@ -240,7 +241,7 @@ class Upload extends GetView<UploadController> {
         ),
         actions: [
           GestureDetector(
-            onTap: () {},
+            onTap: controller.gotoImageFilter,
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: ImageData(

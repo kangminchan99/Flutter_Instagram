@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_insta/controller/upload_controller.dart';
+import 'package:flutter_insta/pages/upload/upload.dart';
 import 'package:get/get.dart';
 import '../components/message_popup.dart';
-import '../pages/upload.dart';
 
 // 가독성이 좋게 구현
 enum PageName { Home, SEARCH, UPLOAD, ACTICITY, MYPAGE }

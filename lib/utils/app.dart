@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_insta/components/image_data.dart';
 import 'package:flutter_insta/controller/bottom_nav_controller.dart';
 import 'package:flutter_insta/pages/home.dart';
-import 'package:flutter_insta/pages/upload.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
 import '../pages/active_history.dart';
