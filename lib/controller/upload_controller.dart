@@ -7,7 +7,6 @@ class UploadController extends GetxController {
   // GetX에서 OBS를 사용하면 위젯을 업데이트할 필요 없이 데이터 변경에 따라 자동으로 뷰가 업데이트
   RxList<AssetEntity> imageList = <AssetEntity>[].obs;
   RxString headerTitle = ''.obs;
-
   Rx<AssetEntity> selectedImage = const AssetEntity(
     id: '0',
     typeInt: 0,
@@ -39,10 +38,10 @@ class UploadController extends GetxController {
           ],
         ),
       );
-      albums.addAll([
-        AssetPathEntity(id: '', name: '1'),
-        AssetPathEntity(id: '', name: '1'),
-      ]);
+      // albums.addAll([
+      //   AssetPathEntity(id: '', name: '1'),
+      //   AssetPathEntity(id: '', name: '1'),
+      // ]);
       _loadData();
     } else {
       // message 권한 요청
@@ -50,18 +49,25 @@ class UploadController extends GetxController {
   }
 
   void _loadData() async {
-    headerTitle(albums.first.name);
-    await _pagingPhotos();
+    changeAlbum(albums.first);
+
     // update();
   }
 
-  Future<void> _pagingPhotos() async {
-    var photos = await albums.first.getAssetListPaged(page: 0, size: 30);
+  Future<void> _pagingPhotos(AssetPathEntity album) async {
+    imageList.clear();
+    var photos = await album.getAssetListPaged(page: 0, size: 30);
     imageList.addAll(photos);
     changeSelectedImage(imageList.first);
   }
 
   changeSelectedImage(AssetEntity image) {
     selectedImage(image);
+  }
+
+  void changeAlbum(AssetPathEntity album) async {
+    headerTitle(album.name);
+    await _pagingPhotos(album);
+    Get.back();
   }
 }

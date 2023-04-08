@@ -89,10 +89,16 @@ class Upload extends GetView<UploadController> {
                               // ... - 열거하기 위해 사용.
                               ...List.generate(
                                 controller.albums.length,
-                                (index) => Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 20),
-                                  child: Text(controller.albums[index].name),
+                                (index) => GestureDetector(
+                                  onTap: () {
+                                    controller
+                                        .changeAlbum(controller.albums[index]);
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 20),
+                                    child: Text(controller.albums[index].name),
+                                  ),
                                 ),
                               ),
                             ],
@@ -200,6 +206,7 @@ class Upload extends GetView<UploadController> {
       {required Widget Function(Uint8List) builder}) {
     return FutureBuilder(
         future: asset.thumbnailDataWithSize(ThumbnailSize(thumsize, thumsize)),
+        // future: asset.thumbnailData,
         builder: (_, AsyncSnapshot<Uint8List?> snapshot) {
           if (snapshot.hasData) {
             return builder(snapshot.data!);
