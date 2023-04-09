@@ -19,11 +19,12 @@ class UploadDescription extends GetView<UploadController> {
               fit: BoxFit.cover,
             ),
           ),
-          const Expanded(
+          Expanded(
             child: TextField(
+              controller: controller.textEditingController,
               // maxLines: null - 키보드 타입에서 완료 버튼이 줄바꿈으로 바뀐다.
               maxLines: null,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: InputBorder.none,
                 focusedBorder: InputBorder.none,
                 enabledBorder: InputBorder.none,
@@ -126,7 +127,7 @@ class UploadDescription extends GetView<UploadController> {
         ),
         actions: [
           GestureDetector(
-            onTap: () {},
+            onTap: controller.uploadPost,
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: ImageData(IconsPath.uploadComplete),
@@ -144,9 +145,7 @@ class UploadDescription extends GetView<UploadController> {
             bottom: 0,
             top: 0,
             child: GestureDetector(
-              onTap: () {
-                FocusManager.instance.primaryFocus?.unfocus();
-              },
+              onTap: controller.unfocusKeyboard,
             ),
           ),
           SingleChildScrollView(

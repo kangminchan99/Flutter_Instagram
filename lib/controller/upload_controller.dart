@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
@@ -13,6 +15,7 @@ import 'package:photofilters/widgets/photo_filter.dart';
 import '../pages/upload/upload_des.dart';
 
 class UploadController extends GetxController {
+  TextEditingController textEditingController = TextEditingController();
   // showModalBottomSheet애서 빌더를 돌려주므로 albums는 굳이 상태관리를 해줄 필요가 없다.
   var albums = <AssetPathEntity>[];
   // GetX에서 OBS를 사용하면 위젯을 업데이트할 필요 없이 데이터 변경에 따라 자동으로 뷰가 업데이트
@@ -106,5 +109,26 @@ class UploadController extends GetxController {
       filteredImage = imagefile['image_filtered'];
       Get.to(() => const UploadDescription());
     }
+  }
+
+  void unfocusKeyboard() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  void uploadPost() {
+    unfocusKeyboard();
+    print(textEditingController.text);
+    uploadFile(filteredImage!, filename);
+  }
+
+  UploadTask uploadFile(File file, String filename) {
+    // users/{uid}/profile.jpg or profile.png
+    var ref = FirebaseStorage.instance.ref().child('instagram').child(filename);
+
+    final metadata = SettableMetadata(
+        contentType: 'image/jpeg',
+        customMetadata: {'picked-file-path': file.path});
+
+    return ref.putFile(f, metadata);
   }
 }
