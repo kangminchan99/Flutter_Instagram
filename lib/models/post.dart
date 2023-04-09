@@ -23,6 +23,18 @@ class Post {
     this.userInfo,
   });
 
+  static Post? init(InstaUser userInfo) {
+    var time = DateTime.now();
+    return Post(
+      thumbnail: '',
+      userInfo: userInfo,
+      uid: userInfo.uid,
+      description: '',
+      createdAt: time,
+      updatedAt: time,
+    );
+  }
+
   factory Post.fromJson(String docId, Map<String, dynamic> json) {
     return Post(
       id: json['id'] == null ? '' : json['id'] as String,
@@ -43,6 +55,30 @@ class Post {
       userInfo: json['userInfo'] == null
           ? null
           : InstaUser.fromJson(json['userInfo']),
+    );
+  }
+
+  Post copyWith({
+    String? id,
+    String? thumbnail,
+    String? description,
+    int? likeCount,
+    InstaUser? userInfo,
+    String? uid,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    DateTime? deletedAt,
+  }) {
+    return Post(
+      id: id ?? this.id,
+      thumbnail: thumbnail ?? this.thumbnail,
+      description: description ?? this.description,
+      likeCount: likeCount ?? this.likeCount,
+      userInfo: userInfo ?? this.userInfo,
+      uid: uid ?? this.uid,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
     );
   }
 }

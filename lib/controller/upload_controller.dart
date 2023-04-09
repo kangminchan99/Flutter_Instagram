@@ -1,8 +1,12 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_insta/controller/auth_controller.dart';
+import 'package:flutter_insta/utils/data_util.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 // ignore: depend_on_referenced_packages
@@ -12,6 +16,7 @@ import 'package:image/image.dart' as imageLib;
 import 'package:photofilters/filters/preset_filters.dart';
 import 'package:photofilters/widgets/photo_filter.dart';
 
+import '../models/post.dart';
 import '../pages/upload/upload_des.dart';
 
 class UploadController extends GetxController {
@@ -29,10 +34,12 @@ class UploadController extends GetxController {
   ).obs;
 
   File? filteredImage;
+  Post? post;
 
   @override
   void onInit() {
     super.onInit();
+    post = Post.init(AuthController.to.user.value);
     _loadPhotos();
   }
 
@@ -118,7 +125,24 @@ class UploadController extends GetxController {
   void uploadPost() {
     unfocusKeyboard();
     print(textEditingController.text);
-    uploadFile(filteredImage!, filename);
+    String filename = DataUtil.makeFilePath();
+    var task = uploadFile(
+        filteredImage!, '${AuthController.to.user.value.uid}/$filename');
+    if (task != null) {
+      task.snapshotEvents.listen(
+        (event) async {
+          if (event.bytesTransferred == event.totalBytes &&
+              event.state == TaskState.success) {
+            var downloadUrl = await event.ref.getDownloadURL();
+            var updatedPost = post!.copyWith(
+              thumbnail: downloadUrl,
+              description: textEditingController.text,
+            );
+            _submitPost(updatedPost);
+          }
+        },
+      );
+    }
   }
 
   UploadTask uploadFile(File file, String filename) {
@@ -129,6 +153,8 @@ class UploadController extends GetxController {
         contentType: 'image/jpeg',
         customMetadata: {'picked-file-path': file.path});
 
-    return ref.putFile(f, metadata);
+    return ref.putFile(file, metadata);
   }
+
+  void _submitPost(Post postData) async {}
 }
