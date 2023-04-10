@@ -3,7 +3,9 @@ import 'dart:math';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_insta/components/message_popup.dart';
 import 'package:flutter_insta/controller/auth_controller.dart';
+import 'package:flutter_insta/repository/post_repository.dart';
 import 'package:flutter_insta/utils/data_util.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
@@ -156,5 +158,17 @@ class UploadController extends GetxController {
     return ref.putFile(file, metadata);
   }
 
-  void _submitPost(Post postData) async {}
+  void _submitPost(Post postData) async {
+    await PostRepository.updatePost(postData);
+    showDialog(
+      context: Get.context!,
+      builder: (context) => MessagePopup(
+        message: '포스팅이 완료되었습니다.',
+        title: '포스트',
+        okCallback: () {
+          Get.until((route) => Get.currentRoute == '/');
+        },
+      ),
+    );
+  }
 }

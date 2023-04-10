@@ -81,4 +81,18 @@ class Post {
       deletedAt: deletedAt ?? this.deletedAt,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'description': description,
+      'thumbnail': thumbnail,
+      'likeCount': likeCount,
+      'userInfo': userInfo!.toMap(),
+      'uid': uid,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+      'deletedAt': deletedAt,
+    };
+  }
 }
