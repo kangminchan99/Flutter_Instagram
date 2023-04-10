@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_insta/components/avatar.dart';
 import 'package:flutter_insta/components/image_data.dart';
 import 'package:flutter_insta/components/post_widget.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:flutter_insta/controller/home_controller.dart';
+import 'package:get/get.dart';
 
-class Home extends StatelessWidget {
+class Home extends GetView<HomeController> {
   const Home({super.key});
 
   // 내 썸네일과  + 모양이 겹쳐있으므로 스택을 사용해야 한다.
@@ -41,10 +42,13 @@ class Home extends StatelessWidget {
 
   // 중앙 포스트 만들기
   Widget _postList() {
-    return Column(
-      children:
-          // List.generate - 리스트 개수 지정 및 인덱스 지정
-          List.generate(50, (index) => PostWidget()).toList(),
+    return Obx(
+      () => Column(
+        children: List.generate(controller.postList.length,
+            (index) => PostWidget(post: controller.postList[index])).toList(),
+        // // List.generate - 리스트 개수 지정 및 인덱스 지정
+        // List.generate(50, (index) => PostWidget()).toList(),
+      ),
     );
   }
 

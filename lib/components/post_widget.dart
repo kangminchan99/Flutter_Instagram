@@ -3,9 +3,13 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_insta/components/avatar.dart';
 import 'package:flutter_insta/components/image_data.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
+import '../models/post.dart';
 
 class PostWidget extends StatelessWidget {
-  const PostWidget({super.key});
+  final Post post;
+  const PostWidget({required this.post, super.key});
 
   Widget _header() {
     return Padding(
@@ -14,9 +18,8 @@ class PostWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Avatar(
-              thumbPath:
-                  'https://img.hankyung.com/photo/202112/BF.28304936.1.jpg',
-              nickname: '황예지',
+              thumbPath: post.userInfo!.thumbnail!,
+              nickname: post.userInfo!.nickname,
               size: 40,
               type: AvatarType.TYPE3),
           GestureDetector(
@@ -32,9 +35,7 @@ class PostWidget extends StatelessWidget {
   }
 
   Widget _image() {
-    return CachedNetworkImage(
-        imageUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOzHuGO2wHJEggIcRVKIS_0SzoJ2zkJzQQEw&usqp=CAU');
+    return CachedNetworkImage(imageUrl: post.thumbnail!);
   }
 
   Widget _like() {
@@ -64,14 +65,16 @@ class PostWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            'like 50개',
-            style: TextStyle(fontWeight: FontWeight.bold),
+          Text(
+            // likeCount가 널일 경우 0
+            '좋아요 ${post.likeCount ?? 0}개',
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           // 텍스트 접고 펼치기
           ExpandableText(
-            '1\n2\n3\n4\n',
-            prefixText: '황예지',
+            // post.description이 널일경우 ''
+            post.description ?? '',
+            prefixText: post.userInfo!.nickname,
             onPrefixTap: () {
               print('황예지 프로필로 이동');
             },
@@ -93,6 +96,7 @@ class PostWidget extends StatelessWidget {
         child: const Padding(
           padding: EdgeInsets.symmetric(horizontal: 15),
           child: Text(
+            // 추가하기
             '댓글 200개 모두 보기',
             style: TextStyle(color: Colors.grey, fontSize: 13),
           ),
@@ -100,11 +104,11 @@ class PostWidget extends StatelessWidget {
   }
 
   Widget _postTime() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Text(
-        '1일전',
-        style: TextStyle(fontSize: 11, color: Colors.grey),
+        timeago.format(post.createdAt!),
+        style: const TextStyle(fontSize: 11, color: Colors.grey),
       ),
     );
   }
